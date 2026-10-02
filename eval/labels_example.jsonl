@@ -1,0 +1,9 @@
+{"task": "Refactor the README and tidy the docs folder", "msg": "how far along are you?", "label": "B"}
+{"task": "Refactor the README and tidy the docs folder", "msg": "no, keep the old section titles", "label": "A"}
+{"task": "Refactor the README and tidy the docs folder", "msg": "stop, don't touch the docs folder", "label": "A"}
+{"task": "Refactor the README and tidy the docs folder", "msg": "also check tomorrow's weather in San Francisco", "label": "C"}
+{"task": "Refactor the README and tidy the docs folder", "msg": "after that, push it to the remote", "label": "D"}
+{"task": "Migrate the database to the new server", "msg": "which port did you end up using?", "label": "B"}
+{"task": "Migrate the database to the new server", "msg": "leave the source untouched until I say so", "label": "A"}
+{"task": "Migrate the database to the new server", "msg": "find me three papers on speculative decoding", "label": "C"}
+{"task": "Migrate the database to the new server", "msg": "once it's verified, shut down the old container", "label": "D"}

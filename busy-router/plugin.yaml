@@ -1,0 +1,6 @@
+name: busy-router
+version: 1.1.1
+description: "While a chat's agent is mid-turn, route each new message to /btw, /bg or /queue with one structured decision call. Corrections, failures and anything unclear reach busy_input_mode unchanged."
+author: "Guang Yang (Phi Lab Foundation)"
+provides_hooks:
+  - pre_gateway_dispatch

@@ -1,0 +1,30 @@
+diff --git a/gateway/run_busy.py b/gateway/run_busy.py
+index 89cadb02a8..4a4a0fd078 100644
+--- a/gateway/run_busy.py
++++ b/gateway/run_busy.py
+@@ -846,6 +846,25 @@ class GatewayBusySessionMixin:
+         if getattr(event, "internal", False):
+             self._queue_or_replace_pending_event(session_key, event)
+             return True
++        # busy-router: pre_gateway_dispatch only runs on the cold path, so a plugin
++        # never sees a message that arrives mid-turn. Offer it here, after auth/drain/approval routing,
++        # so it can drop the message or rewrite it into a slash command (/btw, /bg, /queue). The
++        # command is dispatched inline exactly as if the user had typed it; anything else falls through
++        # unchanged to the busy_input_mode handling below.
++        if not event.is_command():
++            _hooked = await self._hm_pre_gateway_dispatch_hook(event, event.source)
++            if _hooked is None:
++                return True
++            if _hooked is not event:
++                _hooked._bot_loop_admitted = True  # already charged above; do not charge twice
++                if _hooked.is_command():
++                    logger.info("busy-path plugin rewrite for session %s -> /%s", session_key, _hooked.get_command())
++                    try:
++                        await adapter._dispatch_inline_reply(_hooked)
++                    except Exception as e:
++                        logger.error("busy-path rewritten command dispatch failed: %s", e, exc_info=True)
++                    return True
++                event = _hooked
+         if (
+             event.message_type == MessageType.TEXT
+             and self._effective_busy_text_mode(event.source) == "queue"
